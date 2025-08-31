@@ -3,85 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>⚖ BMI Calculator</title>
+  <title>⚖️ BMI Calculator</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
       color: #fff;
       text-align: center;
-      padding: 40px;
+      padding: 50px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
     }
 
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 20px;
       color: #ffd700;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      width: 320px;
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      font-size: 1.1rem;
+      margin-bottom: 20px;
     }
 
     input {
-      width: 100%;
       padding: 10px;
+      width: 200px;
+      font-size: 18px;
       border: none;
       border-radius: 10px;
+      margin: 10px;
       outline: none;
-      font-size: 1rem;
-      margin-bottom: 15px;
     }
 
     button {
-      padding: 12px;
-      width: 100%;
-      font-size: 1.2rem;
+      padding: 10px 25px;
+      font-size: 18px;
+      background-color: #ff4081;
+      color: white;
       border: none;
       border-radius: 10px;
-      background: #ff4081;
-      color: #fff;
       cursor: pointer;
-      transition: 0.3s;
+      margin-top: 15px;
+      transition: background 0.3s, transform 0.2s;
     }
 
     button:hover {
-      background: #e91e63;
+      background-color: #e91e63;
       transform: scale(1.05);
     }
 
     #result {
-      margin-top: 20px;
-      font-size: 1.3rem;
+      margin-top: 30px;
+      font-size: 1.4rem;
       font-weight: bold;
+      color: #fff;
     }
 
     footer {
-      margin-top: 40px;
+      margin-top: 50px;
       font-size: 0.9rem;
-      color: #ccc;
+      color: #eee;
     }
 
     footer a {
       color: #ffd700;
       text-decoration: none;
-      font-weight: bold;
+      margin: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       transition: color 0.3s;
     }
 
@@ -89,63 +77,59 @@
       color: #ff4081;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .insta-icon {
+      width: 18px;
+      height: 18px;
+      filter: brightness(0) invert(1);
     }
   </style>
 </head>
 <body>
 
-  <h1>⚖ BMI Calculator</h1>
-  
-  <div class="card">
-    <label for="weight">Weight (kg):</label>
-    <input type="number" id="weight" placeholder="Enter weight in kg">
+  <h1>⚖️ BMI Calculator</h1>
+  <p>Enter your height and weight to calculate your Body Mass Index.</p>
 
-    <label for="height">Height (cm):</label>
-    <input type="number" id="height" placeholder="Enter height in cm">
+  <input type="number" id="height" placeholder="Height (cm)" />
+  <br>
+  <input type="number" id="weight" placeholder="Weight (kg)" />
+  <br>
+  <button onclick="calculateBMI()">Calculate BMI</button>
 
-    <button onclick="calculateBMI()">Calculate BMI</button>
-    <div id="result"></div>
-  </div>
+  <div id="result"></div>
 
   <footer>
-    Credits: 
-    <a href="https://www.instagram.com/me.eraa.m" target="_blank">Meera M</a> & 
-    <a href="https://www.instagram.com/soo6ya_" target="_blank">Surya Dev</a>
+    Credits:
+    <a href="https://instagram.com/me.eraa.m" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="insta-icon"> Meera M
+    </a> 
+    & 
+    <a href="https://instagram.com/soo6ya_" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="insta-icon"> Soo6ya
+    </a>
   </footer>
 
   <script>
     function calculateBMI() {
+      const height = parseFloat(document.getElementById("height").value) / 100;
       const weight = parseFloat(document.getElementById("weight").value);
-      const height = parseFloat(document.getElementById("height").value) / 100; // convert cm to m
       const result = document.getElementById("result");
 
-      if (!weight || !height || weight <= 0 || height <= 0) {
-        result.textContent = "⚠ Please enter valid values!";
+      if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+        result.textContent = "⚠ Please enter valid height and weight!";
         result.style.color = "#ffcc00";
         return;
       }
 
       const bmi = (weight / (height * height)).toFixed(2);
-      let category = "";
+      let status = "";
 
-      if (bmi < 18.5) {
-        category = "Underweight 😕";
-        result.style.color = "#00bcd4";
-      } else if (bmi < 24.9) {
-        category = "Normal ✅";
-        result.style.color = "#4caf50";
-      } else if (bmi < 29.9) {
-        category = "Overweight ⚠";
-        result.style.color = "#ff9800";
-      } else {
-        category = "Obese 🚨";
-        result.style.color = "#f44336";
-      }
+      if (bmi < 18.5) status = "Underweight 😕";
+      else if (bmi < 24.9) status = "Normal ✅";
+      else if (bmi < 29.9) status = "Overweight ⚠";
+      else status = "Obese 🚨";
 
-      result.textContent = `Your BMI is ${bmi} → ${category}`;
+      result.textContent = `Your BMI is ${bmi} → ${status}`;
+      result.style.color = "#fff";
     }
   </script>
 
